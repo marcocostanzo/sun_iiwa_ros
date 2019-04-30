@@ -1,0 +1,52 @@
+
+
+
+<launch>
+
+  <arg name="clik_gain" default="0.5"/>
+
+  <arg name="hz" default="1000.0"/>
+
+  <arg name="dls_joint_speed_saturation" default="3.0"/>
+
+  <arg name="second_obj_gain" default="0.0"/>
+
+  <!--
+  <arg name="joint_target_robot" default="[0.0, 0.0, 0.0, 1.7881, 0.0, 0.0, 0.0]"/>
+  -->
+
+  <arg name="joint_weights" default="[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]"/>
+
+  <!--
+  <arg name="mask_cartesian" default="[1, 1, 1, 1, 1, 1]"/>
+  -->
+
+  <arg name="n_T_e_position" default="[0.0, 0.0, 0.1]"/>
+  <arg name="n_T_e_quaternion" default="[1.0, 0.0, 0.0, 0.0]"/>
+
+  <node name="iiwa_clik"  pkg="sun_iiwa_nodes" type="iiwa_clik" output="screen">
+
+      <param name="clik_gain" value="$(arg clik_gain)"/>
+
+      <param name="hz" value="$(arg hz)"/>
+
+      <param name="dls_joint_speed_saturation" value="$(arg dls_joint_speed_saturation)"/>
+
+      <param name="second_obj_gain" value="$(arg second_obj_gain)"/>
+
+      <!--
+      <rosparam param="joint_target_robot" subst_value="true">$(arg joint_target_robot)</rosparam>
+      -->
+
+      <rosparam param="joint_weights" subst_value="true">$(arg joint_weights)</rosparam>
+
+      <!--
+      <rosparam param="mask_cartesian" subst_value="true">$(arg mask_cartesian)</rosparam>
+      -->
+
+      <rosparam param="n_T_e_position" subst_value="true">$(arg n_T_e_position)</rosparam>
+      <rosparam param="n_T_e_quaternion" subst_value="true">$(arg n_T_e_quaternion)</rosparam>
+
+</node>
+
+</launch>
