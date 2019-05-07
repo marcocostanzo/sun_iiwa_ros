@@ -2,6 +2,7 @@
 #include "Robots/LBRiiwa7.h"
 #include "sun_robot_ros/CLIK_Node.h"
 #include "iiwa_msgs/JointPosition.h"
+#include "iiwa_msgs/JointPositionVelocity.h"
 #include "geometry_msgs/PoseStamped.h"
 
 using namespace std;
@@ -93,6 +94,7 @@ Vector<> getJointPosition_fcn(){
 }
 
 void publish_fcn( const Vector<>& qR, const Vector<>& dqR ){
+    //iiwa_msgs::JointPositionVelocity out_msg;
     iiwa_msgs::JointPosition out_msg;
 
     out_msg.position.a1 = qR[0];
@@ -102,8 +104,16 @@ void publish_fcn( const Vector<>& qR, const Vector<>& dqR ){
     out_msg.position.a5 = qR[4];
     out_msg.position.a6 = qR[5];
     out_msg.position.a7 = qR[6];
-
-    out_msg.header.frame_id = "SIA5F";
+/*
+    out_msg.velocity.a1 = dqR[0];
+    out_msg.velocity.a2 = dqR[1];
+    out_msg.velocity.a3 = dqR[2];
+    out_msg.velocity.a4 = dqR[3];
+    out_msg.velocity.a5 = dqR[4];
+    out_msg.velocity.a6 = dqR[5];
+    out_msg.velocity.a7 = dqR[6];
+*/
+    out_msg.header.frame_id = "iiwa";
     out_msg.header.stamp = ros::Time::now();
 
     pub_joints.publish(out_msg);
@@ -120,6 +130,7 @@ int main(int argc, char *argv[])
     //params
     string topic_joint_command_str;
     nh_private.param("joint_command_topic" , topic_joint_command_str, string("/iiwa/command/JointPosition") );
+    //nh_private.param("joint_command_topic" , topic_joint_command_str, string("/iiwa/command/JointPositionVelocity") );
     string topic_ee_pose_str;
     nh_private.param("ee_pose_topic" , topic_ee_pose_str, string("ee_pose") );
     string joint_state_topic_str;
@@ -130,6 +141,7 @@ int main(int argc, char *argv[])
     
     //Publishers
     pub_joints = nh_public.advertise<iiwa_msgs::JointPosition>(topic_joint_command_str, 1);
+    //pub_joints = nh_public.advertise<iiwa_msgs::JointPositionVelocity>(topic_joint_command_str, 1);
     pub_pose = nh_public.advertise<geometry_msgs::PoseStamped>(topic_ee_pose_str, 1);
     
     clik_node = new CLIK_Node(
