@@ -45,7 +45,7 @@ void subJointVelocityCB( const iiwa_msgs::JointVelocity::ConstPtr& msg ){
 
 int main(int argc, char *argv[])
 {
-    ros::init(argc, argv, "iiwa_interface");
+    ros::init(argc, argv, "sun_iiwa_interface");
 
     ros::NodeHandle nh_public;
     
@@ -57,6 +57,5 @@ int main(int argc, char *argv[])
 
     ros::spin();
     
-
     return 0;
 }
