@@ -6,6 +6,7 @@
 
 /*GLOBAL ROS VARS*/
 ros::Publisher pub_joints_cmd;
+std::string joint_state_topic_str;
 /*END Global ROS Vars*/
 
 TooN::Vector<7> qR;
@@ -26,6 +27,8 @@ void joint_position_cb( const iiwa_msgs::JointPosition::ConstPtr& joi_state_msg 
 TooN::Vector<> get_joint_position_fcn()
 {
     //wait joint position
+    ros::NodeHandle nh_public;
+    ros::Subscriber joint_position_sub = nh_public.subscribe(joint_state_topic_str, 1, joint_position_cb);
     b_joint_state_arrived = false;
     while( ros::ok() && !b_joint_state_arrived )
     {
@@ -68,16 +71,14 @@ int main(int argc, char *argv[])
     ros::init(argc,argv, "iiwa_clik");
 
     ros::NodeHandle nh_private = ros::NodeHandle("~");
-    ros::NodeHandle nh_public = ros::NodeHandle();
+    ros::NodeHandle nh_public;
 
     //params
-    std::string joint_state_topic_str;
     nh_private.param("joint_state_topic" , joint_state_topic_str, std::string("/iiwa/state/JointPosition") );
     std::string joint_command_topic_str;
     nh_private.param("joint_command_topic" , joint_command_topic_str, std::string("/iiwa/command/JointPosition") );
 
     //Subscribers
-    ros::Subscriber joint_position_sub = nh_public.subscribe(joint_state_topic_str, 1, joint_position_cb);
 
     //Publishers
     pub_joints_cmd = nh_public.advertise<iiwa_msgs::JointPosition>(joint_command_topic_str, 1);
