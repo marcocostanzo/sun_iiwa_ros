@@ -86,10 +86,10 @@ int main(int argc, char *argv[])
     sun::LBRiiwa7 iiwa7("iiwa7");
     sun::clikNode clik_node(
             iiwa7, 
-            nh_public,
-            nh_private,
             get_joint_position_fcn, 
-            joint_publish_fcn
+            joint_publish_fcn,
+            nh_public,
+            nh_private
             );
 
     clik_node.run();
