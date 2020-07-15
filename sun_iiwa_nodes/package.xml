@@ -52,6 +52,7 @@
 
   <depend>iiwa_msgs</depend>
   <depend>sun_robot_ros</depend>
+  <depend>sun_traj_lib</depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

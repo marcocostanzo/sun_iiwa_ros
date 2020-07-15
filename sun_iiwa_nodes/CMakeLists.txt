@@ -10,6 +10,7 @@ project(sun_iiwa_nodes)
 find_package(catkin REQUIRED COMPONENTS
 iiwa_msgs
 sun_robot_ros
+sun_traj_lib
 )
 
 ## System dependencies are found with CMake's conventions
@@ -212,5 +213,17 @@ target_link_libraries(iiwa_joint_controller
 add_executable(iiwa_clik src/iiwa_clik_node.cpp)
 add_dependencies(iiwa_clik ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(iiwa_clik
+    ${catkin_LIBRARIES}
+)
+
+add_executable(iiwa_joint_state_command_interface src/iiwa_joint_state_command_interface_node.cpp)
+add_dependencies(iiwa_joint_state_command_interface ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(iiwa_joint_state_command_interface
+    ${catkin_LIBRARIES}
+)
+
+add_executable(iiwa_move_to src/iiwa_move_to.cpp)
+add_dependencies(iiwa_move_to ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(iiwa_move_to
     ${catkin_LIBRARIES}
 )
