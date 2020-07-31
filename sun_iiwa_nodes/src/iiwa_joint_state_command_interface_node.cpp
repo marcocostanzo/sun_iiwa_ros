@@ -1,4 +1,6 @@
 #include "iiwa_msgs/JointPosition.h"
+// #include "iiwa_msgs/JointPositionVelocity.h"
+
 #include "ros/ros.h"
 #include "sensor_msgs/JointState.h"
 
@@ -12,8 +14,10 @@ ros::Publisher pubJointCommand;
 void subJointStateCommandCB(sensor_msgs::JointState msg)
 {
   msg = sun::filterJointNames(msg, jont_names);
+  // iiwa_msgs::JointPositionVelocity cmd_msg;
   iiwa_msgs::JointPosition cmd_msg;
   cmd_msg.header = msg.header;
+
   cmd_msg.position.a1 = msg.position[0];
   cmd_msg.position.a2 = msg.position[1];
   cmd_msg.position.a3 = msg.position[2];
@@ -21,6 +25,16 @@ void subJointStateCommandCB(sensor_msgs::JointState msg)
   cmd_msg.position.a5 = msg.position[4];
   cmd_msg.position.a6 = msg.position[5];
   cmd_msg.position.a7 = msg.position[6];
+
+  /*
+    cmd_msg.velocity.a1 = msg.velocity[0];
+    cmd_msg.velocity.a2 = msg.velocity[1];
+    cmd_msg.velocity.a3 = msg.velocity[2];
+    cmd_msg.velocity.a4 = msg.velocity[3];
+    cmd_msg.velocity.a5 = msg.velocity[4];
+    cmd_msg.velocity.a6 = msg.velocity[5];
+    cmd_msg.velocity.a7 = msg.velocity[6];
+    */
 
   pubJointCommand.publish(cmd_msg);
 }
@@ -33,6 +47,7 @@ int main(int argc, char* argv[])
 
   ros::Subscriber subJointStateCommand =
       nh_public.subscribe("/iiwa/command/joint_state_position", 1, subJointStateCommandCB);
+  // pubJointCommand = nh_public.advertise<iiwa_msgs::JointPositionVelocity>("/iiwa/command/JointPositionVelocity", 1);
   pubJointCommand = nh_public.advertise<iiwa_msgs::JointPosition>("/iiwa/command/JointPosition", 1);
 
   ros::spin();
