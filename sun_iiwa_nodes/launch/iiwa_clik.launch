@@ -34,11 +34,9 @@
 
       <param name="second_obj_gain" value="$(arg second_obj_gain)"/>
 
-      <!--
-      <rosparam param="joint_target_robot" subst_value="true">$(arg joint_target_robot)</rosparam>
-      -->
-
-      <rosparam param="joint_weights" subst_value="true">$(arg joint_weights)</rosparam>
+      <rosparam param="joint_target_robot_second_obj" subst_value="true">$(arg joint_target_robot)</rosparam>
+      
+      <rosparam param="joint_weights_second_obj" subst_value="true">$(arg joint_weights)</rosparam>
 
       <!--
       <rosparam param="mask_cartesian" subst_value="true">$(arg mask_cartesian)</rosparam>
