@@ -3,7 +3,7 @@
 
 <launch>
 
-  <arg name="clik_gain" default="0.5"/>
+  <arg name="clik_error_gain" default="0.5"/>
 
   <arg name="hz" default="1000.0"/>
 
@@ -22,7 +22,7 @@
 
   <node name="iiwa_clik"  pkg="sun_iiwa_nodes" type="iiwa_clik" output="screen">
 
-      <param name="clik_gain" value="$(arg clik_gain)"/>
+      <param name="error_gain" value="$(arg clik_error_gain)"/>
 
       <param name="hz" value="$(arg hz)"/>
 
