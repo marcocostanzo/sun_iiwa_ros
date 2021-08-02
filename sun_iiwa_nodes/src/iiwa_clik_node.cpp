@@ -8,21 +8,24 @@ class iiwa_ClikNode : public ClikNode {
 private:
 protected:
   ros::Publisher pub_joints_cmd_;
-  std::string joint_state_topic_str_;
+  ros::Subscriber joint_position_sub_;
 
 public:
   iiwa_ClikNode(const ros::NodeHandle &nh_for_topics = ros::NodeHandle("clik"),
                 const ros::NodeHandle &nh_for_parmas = ros::NodeHandle("~"))
       : ClikNode(std::make_shared<LBRiiwa7>("iiwa7"), nh_for_topics,
                  nh_for_parmas) {
-
-    nh_for_parmas.param("joint_state_topic", joint_state_topic_str_,
+                   
+    std::string joint_state_topic_str;
+    nh_for_parmas.param("joint_state_topic", joint_state_topic_str,
                         std::string("/iiwa/state/JointPosition"));
     std::string joint_command_topic_str;
     nh_for_parmas.param("joint_command_topic", joint_command_topic_str,
                         std::string("/iiwa/command/JointPosition"));
 
     // Subscribers
+    joint_position_sub_ = nh_.subscribe(
+        joint_state_topic_str, 1, &iiwa_ClikNode::joint_position_cb, this);
 
     // Publishers
     pub_joints_cmd_ =
@@ -45,13 +48,13 @@ public:
   }
 
   //! Cbs
-  virtual TooN::Vector<> getJointPositionRobot() override {
+  virtual TooN::Vector<> getJointPositionRobot(bool wait_new_sample) override {
     // wait joint position
-    ros::Subscriber joint_position_sub = nh_.subscribe(
-        joint_state_topic_str_, 1, &iiwa_ClikNode::joint_position_cb, this);
-    b_joint_state_arrived = false;
+    if (wait_new_sample) {
+      b_joint_state_arrived = false;
+    }
     while (ros::ok() && !b_joint_state_arrived) {
-      ros::spinOnce();
+      spinOnce();
     }
     return qR;
   }

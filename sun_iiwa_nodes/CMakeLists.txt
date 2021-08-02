@@ -11,6 +11,8 @@ find_package(catkin REQUIRED COMPONENTS
 iiwa_msgs
 sun_robot_ros
 sun_traj_lib
+nodelet
+pluginlib
 )
 
 ## System dependencies are found with CMake's conventions
@@ -103,9 +105,9 @@ sun_traj_lib
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES sun_iiwa_nodes
-#  CATKIN_DEPENDS other_catkin_pkg
+ INCLUDE_DIRS include
+ LIBRARIES iiwa_fkine_nodelet
+ CATKIN_DEPENDS nodelet pluginlib
 #  DEPENDS system_lib
 )
 
@@ -116,8 +118,16 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+include
  ${catkin_INCLUDE_DIRS}
+)
+
+add_library(iiwa_fkine_nodelet
+  src/${PROJECT_NAME}/IIWA_FkineNodelet.cpp
+)
+add_dependencies(iiwa_fkine_nodelet ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(iiwa_fkine_nodelet
+${catkin_LIBRARIES}
 )
 
 ## Declare a C++ library
