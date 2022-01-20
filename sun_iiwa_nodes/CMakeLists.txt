@@ -106,7 +106,7 @@ pluginlib
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
  INCLUDE_DIRS include
- LIBRARIES iiwa_fkine_nodelet
+ LIBRARIES iiwa_fkine_nodelet iiwa_clik_nodelet
  CATKIN_DEPENDS nodelet pluginlib
 #  DEPENDS system_lib
 )
@@ -127,6 +127,14 @@ add_library(iiwa_fkine_nodelet
 )
 add_dependencies(iiwa_fkine_nodelet ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(iiwa_fkine_nodelet
+${catkin_LIBRARIES}
+)
+
+add_library(iiwa_clik_nodelet
+  src/${PROJECT_NAME}/IIWA_ClikNodelet.cpp
+)
+add_dependencies(iiwa_clik_nodelet ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(iiwa_clik_nodelet
 ${catkin_LIBRARIES}
 )
 
